@@ -1,14 +1,7 @@
-/// <reference types ="Cypress" />
-
-describe('Comparar total de ejecuciones d euna implementacion con Qlik',  ()=>{
-    let token = ''
-    let imprimirfechas = ''
-    let comparacion = 'count'
- 
-
-   it('Obtener token y contar los resultados', ()=>{ 
-      
-    cy.request({
+class MethodsInit()
+{
+   public function login(){
+     cy.request({
 
         method : 'POST',
         url : 'https://datatooling.scib.pre.corp/api/sessions',
@@ -22,7 +15,13 @@ describe('Comparar total de ejecuciones d euna implementacion con Qlik',  ()=>{
             cy.log(JSON.stringify(response));
             cy.log(response.body.token);
             token = response.body.token;
-            cy.request({
+	    return token;
+	});
+
+   }	
+   public function getData(token){
+     
+         cy.request({
 
                 method : 'GET',
                 url : 'https://datatooling.scib.pre.corp/api/rule_implementations/250',
@@ -43,19 +42,23 @@ describe('Comparar total de ejecuciones d euna implementacion con Qlik',  ()=>{
                     }).length;
                     comparacion = count
                     cy.log(count)
-                                
-                }).then((comparar)=>{
-                    cy.task("dbQuery", {"query": "SELECT count(*) FROM esq_td_metrics.results WHERE results_implementation_id = 250"})
+                    return comparacion;
+                    });
+   }
+   public async void query(comparacion){
+        cy.task("dbQuery", {"query": "SELECT count(*) FROM esq_td_metrics.results WHERE results_implementation_id = 250"})
                     .then(queryResponse => {
                     cy.log(queryResponse[0].count)//sacar el array a entero 
                     expect(comparacion).to.not.equal(queryResponse[0].count);
                     //expect(comparacion).not.eq(queryResponse[0].count);
-                    
-             
-           
-       })
-    })
-})
-   })
-})
-https://meet.google.com/zcf-jjsu-wdp
+                    }
+   }
+}
+
+/// usar objecto de la clase creada en el onClick
+async ()={
+    let object=new MethodsInit();
+    let token=object.login();
+    let comparacion=object.getData(token);
+    await query(comparacion);
+}
