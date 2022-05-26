@@ -58,3 +58,4 @@ describe('Comparar total de ejecuciones d euna implementacion con Qlik',  ()=>{
 })
    })
 })
+https://meet.google.com/zcf-jjsu-wdp
