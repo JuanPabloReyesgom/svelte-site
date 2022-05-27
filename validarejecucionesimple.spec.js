@@ -1,4 +1,4 @@
-class MethodsInit()
+https://meet.google.com/cbq-ejxx-tjf
 https://meet.google.com/fof-dzox-zop
    public function login(){
      cy.request({
